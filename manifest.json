@@ -1,0 +1,13 @@
+{
+  "package": "ai_card_translator",
+  "name": "AI Card Translator (OpenAI & Gemini)",
+  "author": "Yuwa / ChatGPT",
+  "version": "1.0.0",
+  "mod": 1765492577,
+  "min_point_version": 66,
+  "max_point_version": 99,
+  "branch_index": 0,
+  "homepage": "",
+  "conflicts": [],
+  "depends": []
+}
