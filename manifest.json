@@ -1,13 +1,21 @@
 {
-  "package": "ai_card_translator",
-  "name": "AI Card Translator (OpenAI & Gemini)",
-  "author": "Yuwa / ChatGPT",
-  "version": "1.0.0",
-  "mod": 1765492577,
-  "min_point_version": 66,
-  "max_point_version": 99,
-  "branch_index": 0,
-  "homepage": "",
-  "conflicts": [],
-  "depends": []
+  "name": "anki-ai-translator",
+  "version": "0.1.0",
+  "description": "Translate your Anki notes using AI (OpenAI or Gemini) and write the results into target fields. This add-on supports both single-note translation (from the Tools menu) and batch translation using a search query.",
+  "auther": "Yuwa Yanagitani",
+  "author": "Yuwa Yanagitani",
+  "homepage": "https://github.com/yuwayanagitani/anki-ai-translator",
+  "license": "MIT",
+  "min_anki_version": "23.10.0",
+  "max_anki_version": null,
+  "requirements": [],
+  "entry_point": "__init__.py",
+  "config_file": "config.json",
+  "tags": [
+    "anki",
+    "addon",
+    "ai",
+    "translation"
+  ],
+  "notes": ""
 }
