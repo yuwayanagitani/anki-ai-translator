@@ -887,6 +887,21 @@ def translate_current_card(reviewer) -> None:
             "Nothing to translate for this note (skipped by rules).",
         )
 
+def on_reviewer_will_show_context_menu(reviewer, menu) -> None:
+    """
+    Reviewer bottom bar の「More / その他」メニューに項目を追加する。
+    （右クリックのコンテキストメニューではなく、Moreボタン側）
+    """
+    label = "Translate This Card with AI"
+
+    # 念のため重複追加を防ぐ
+    for act in menu.actions():
+        if act.text() == label:
+            return
+
+    act = QAction(label, menu)
+    act.triggered.connect(lambda: translate_current_card(reviewer))
+    menu.addAction(act)
 
 def on_reviewer_did_init(reviewer) -> None:
     """Add a shortcut (Ctrl+Shift+T) to translate the current card."""
@@ -917,3 +932,4 @@ def on_profile_did_open() -> None:
 
 gui_hooks.profile_did_open.append(on_profile_did_open)
 gui_hooks.reviewer_did_init.append(on_reviewer_did_init)
+gui_hooks.reviewer_will_show_context_menu.append(on_reviewer_will_show_context_menu)
