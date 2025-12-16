@@ -9,7 +9,7 @@ It is designed for situations where you suddenly want to understand a card in an
 
 This add-on is officially published on **AnkiWeb**:
 
-👉 https://ankiweb.net/shared/info/728208605
+👉 https://ankiweb.net/shared/info/918408198
 
 Installing from AnkiWeb is recommended for the easiest setup and automatic updates.
 
