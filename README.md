@@ -1,202 +1,142 @@
-# AI Card Translator (Anki Add-on)
+# AI Card Translator
 
-AI Card Translator translates Anki card content (question and/or answer) using an AI model, and writes the translated text into **separate target fields** (e.g., `Front_jp`, `Back_jp`).
-
-It’s intended for study workflows where you keep the original text and store the translation alongside it—without manually copying and pasting.
-
----
-
-## What it does
-
-For each note, the add-on can:
-
-1. Read a **source question field** and/or **source answer field**
-2. Send that text to an AI provider (OpenAI or Gemini)
-3. Receive a JSON result: `{"question": "...", "answer": "..."}`
-4. Write translated text into the configured **target fields**
-5. Add a tag to mark the note as translated (and optionally an error tag if something failed)
-
-The add-on can translate:
-- only the question
-- only the answer
-- both
+**AI Card Translator** is an Anki add-on that allows you to **translate the currently displayed card instantly using AI**, directly from the Reviewer screen.  
+It is designed for situations where you suddenly want to understand a card in another language *during review*, without breaking your learning flow.
 
 ---
 
-## How to use
+## 🔗 AnkiWeb Page
 
-### 1) Translate many notes (Tools menu / search query mode)
+This add-on is officially published on **AnkiWeb**:
 
-Menu item:
-- **Tools → Translate Cards with AI**
+👉 https://ankiweb.net/shared/info/728208605
 
-Flow:
-1. Enter an Anki search query (example: `deck:Renal tag:en`)
-2. The add-on selects notes that match the query
-3. It skips notes according to your rules (see “Skip rules”)
-4. It translates remaining notes with a progress bar
-5. It shows a summary (translated / skipped / errors)
-6. If there were errors, it shows an error report dialog at the end
+Installing from AnkiWeb is recommended for the easiest setup and automatic updates.
 
 ---
 
-### 2) Translate the current review card (Reviewer hotkey)
+## 🎯 Key Features
 
-Default hotkey:
-- **Ctrl+Shift+T**
-
-When pressed in the Reviewer, the add-on translates the current card’s note (if not skipped by rules), applies the translation, and refreshes Anki.
-
----
-
-## Setup: API keys (required)
-
-This add-on reads API keys from **environment variables** (by default):
-
-- OpenAI: `OPENAI_API_KEY`
-- Gemini: `GEMINI_API_KEY`
-
-If the environment variable is missing, the add-on will raise an error like:
-- “Environment variable 'OPENAI_API_KEY' is not set.”
-
-Tip: environment variables must be visible to the **Anki process** (often requires restarting Anki after setting them).
+- 🌍 Translate the **currently reviewed card** with one action  
+- 🧠 Uses AI for **context-aware, natural translations**  
+- 🔁 Supports multiple providers:
+  - OpenAI
+  - Google Gemini  
+- 🪶 Minimal UI — no interruption to review flow  
+- 🧩 Works with any note type and any language pair  
 
 ---
 
-## Configuration
+## 🚀 How It Works
+
+1. You are reviewing a card in Anki  
+2. Trigger **AI Card Translator** from the Reviewer menu  
+3. The card’s content is sent to the selected AI model  
+4. The translated text is generated  
+5. The translation is written back to the configured field
+
+This makes it ideal for:
+- Language learning  
+- Translating medical / technical terms  
+- Understanding foreign-language source material during review  
+
+---
+
+## 📦 Installation
+
+### ✅ From AnkiWeb (Recommended)
+
+1. Open Anki  
+2. Go to **Tools → Add-Ons → Browse & Install**  
+3. Search for **AI Card Translator**  
+4. Install and restart Anki
+
+### 📁 Manual Installation (GitHub)
+
+1. Download or clone this repository  
+2. Place it into:  
+   `Anki2/addons21/anki-ai-translator`  
+3. Restart Anki
+
+---
+
+## 🔑 API Key Setup
+
+This add-on requires an API key for the selected provider.
+
+| Provider | Environment Variable |
+|--------|----------------------|
+| OpenAI | `OPENAI_API_KEY` |
+| Gemini | `GEMINI_API_KEY` |
+
+API keys can be set via:
+- System environment variables, or  
+- The add-on’s configuration dialog
+
+---
+
+## ⚙️ Configuration
 
 Open:
-- **Tools → Add-ons → AI Card Translator → Config**
 
-The add-on provides a settings dialog and saves the values into `config.json`.
+**Tools → Add-Ons → AI Card Translator → Config**
 
-### Provider
+Main options include:
 
-- `provider`: `openai` or `gemini`
-
-OpenAI:
-- `openai_model` (default: `gpt-4o-mini`)
-- `openai_api_base` (default: `https://api.openai.com/v1/chat/completions`)
-- `openai_api_key_env` (default: `OPENAI_API_KEY`)
-
-Gemini:
-- `gemini_model` (default: `gemini-2.5-flash-lite`)
-- `gemini_api_base` (default: `https://generativelanguage.googleapis.com/v1`)
-- `gemini_api_key_env` (default: `GEMINI_API_KEY`)
+- AI provider selection (OpenAI / Gemini)  
+- Model name  
+- Source language (auto-detect supported)  
+- Target language  
+- Output field (where the translation is written)  
+- Overwrite behavior (skip / append / replace)
 
 ---
 
-### Languages
+## 🧪 Usage
 
-- `source_language` (default: `English`)
-- `target_language` (default: `Japanese`)
+### Translate the current card
 
-These values are included in the translation prompt, so you can use any language names you prefer.
+While reviewing a card:
 
----
+**More → AI Card Translator**
 
-### Field mapping
+The translation is generated instantly and written to the specified field.
 
-Default mapping is designed for bilingual note types:
-
-- `question_source_field`: `Front`
-- `question_target_field`: `Front_jp`
-- `answer_source_field`: `Back`
-- `answer_target_field`: `Back_jp`
-
-Make sure your note type actually contains the target fields, otherwise the add-on will error.
+This allows you to:
+- Translate only *when needed*  
+- Keep original cards untouched  
+- Add translations incrementally during normal review  
 
 ---
 
-### What to translate
+## ⚠️ Privacy Notes
 
-- `translate_question`: True/False
-- `translate_answer`: True/False
-
----
-
-### Behavior / limits
-
-- `max_chars_per_field` (default: `800`)  
-  If a source field exceeds this length, that field is **skipped** (not translated).  
-  This prevents huge prompts and accidental expensive runs.
-
-- `temperature` (default: `0.1`)  
-  Lower values are more literal/consistent.
-
-- `batch_query_default` (default: `deck:current`)  
-  Default query shown in the batch translation dialog.
+Card contents are sent to external AI services.  
+Avoid translating cards containing sensitive or personal information unless you understand the data handling policies of the selected provider.
 
 ---
 
-### Tags
+## 🛠 Troubleshooting
 
-- `tag_translated` (default: `AI_Translated`)  
-  Added to notes when translation is applied successfully.
-
-- `tag_error` (default: `AI_TranslateError`)  
-  Added to notes that fail during batch translation.
-
----
-
-## Skip rules (important)
-
-These options help prevent overwriting or re-translating notes:
-
-- `skip_if_target_not_empty` (default: True)  
-  If either target field already has content, the note is skipped.
-
-- `skip_if_has_translated_tag` (default: True)  
-  If the note already has `tag_translated`, it is skipped.
-
-In batch mode, the add-on first filters notes with these rules, then asks for confirmation before sending anything to the AI.
+| Problem | Solution |
+|-------|----------|
+| “No current card.” | Run from the Reviewer screen |
+| Translation not written | Check output field name |
+| API error | Verify API key and model |
+| Unexpected language | Set target language explicitly |
 
 ---
 
-## Output format and robustness
+## 📜 License
 
-Both providers are instructed to return **JSON only**:
-
-```json
-{"question":"...","answer":"..."}
-```
-
-Because some models may wrap JSON in code fences, the add-on includes a small JSON-extraction helper that can strip ``` fences and pull out the `{...}` object.
+MIT License
 
 ---
 
-## Troubleshooting
+## 🔧 Related Add-ons
 
-### “No notes matched the given search query.”
-Your Anki search query returned zero results.
+- **AI Card Explainer** — Generate explanations for cards  
+- **AI Card Splitter** — Split large cards into smaller ones  
+- **HTML Exporter for Anki** — Export cards to HTML / PDF  
 
-### “All matched notes are already translated or skipped by rules.”
-Everything matched your skip conditions:
-- already has `AI_Translated`, and/or
-- target fields are not empty
-
-### “Field 'X' does not exist in note type.”
-Your `*_target_field` (or source field) doesn’t exist in the current note type.  
-Update field mapping in config or add the missing field to your note type.
-
-### Errors / rate limits
-If the provider rejects requests (invalid key, quota, network issues):
-- confirm your API key env var is correct
-- try fewer notes per run
-- try a different model/provider
-
-Batch mode accumulates errors and shows them in one report at the end.
-
----
-
-## Privacy
-
-This add-on sends your note content (question and/or answer) to an external AI provider (OpenAI or Google Gemini) when enabled.
-
-Do not translate sensitive or private content unless you understand and accept the provider’s data handling policies.
-
----
-
-## License
-
-See the LICENSE file in this repository.
+These add-ons are designed to work together as a modular, AI-powered Anki workflow.
